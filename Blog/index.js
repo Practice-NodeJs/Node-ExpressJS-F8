@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
+const methodOverride = require("method-override");
 const { engine } = require("express-handlebars");
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use(methodOverride("_method"));
 
 // Template engine
 app.engine("handlebars", engine());

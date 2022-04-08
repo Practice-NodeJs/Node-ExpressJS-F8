@@ -13,8 +13,6 @@ class CourseController {
         res.render("course/index", { data: mutipleMongooseToObject(data) })
       )
       .catch((err) => res.status(400).json({ error: "Error !!" }));
-
-    // res.send("COURSE DETAIL");
   }
 
   //GET /course:/slug
@@ -37,6 +35,24 @@ class CourseController {
     const course = new courseModel(req.body);
     course
       .save()
+      .then((data) => res.redirect("/course"))
+      .catch((err) => console.log("Log : err", err));
+  }
+
+  //GET /course/edit/:id
+  edit(req, res, next) {
+    courseModel
+      .findById(req.params.id)
+      .then((data) =>
+        res.render("course/edit", { course: mongooseToObject(data) })
+      )
+      .catch((err) => console.log("Log : err", err));
+  }
+
+  //PUT /course/edit/:id
+  update(req, res, next) {
+    courseModel
+      .updateOne({ _id: req.params.id }, req.body)
       .then((data) => res.redirect("/course"))
       .catch((err) => console.log("Log : err", err));
   }
